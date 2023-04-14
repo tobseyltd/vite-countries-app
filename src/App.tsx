@@ -1,20 +1,14 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  HStack,
-  SimpleGrid,
-  Stack,
-} from "@chakra-ui/react";
-import Header from "./components/Header";
-import CountryCard from "./components/CountryCard";
+import { Flex, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
 import axios, { CanceledError } from "axios";
 import { useEffect, useState } from "react";
+import Header from "./components/Header";
+import CountryCard from "./components/CountryCard";
+import CountryFilter from "./components/CountryFilter";
+import SearchFilter from "./components/SearchFilter";
 
 interface fetchApiProps {
   name: {
-    official: string;
+    common: string;
   };
   capital: string;
   flags: {
@@ -28,6 +22,23 @@ interface fetchApiProps {
 const App = () => {
   const [countries, setCountries] = useState<fetchApiProps[]>([]);
   const [fetchError, setFetchError] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  const regions = countries
+    .map((country) => country.region)
+    .sort()
+    .filter((region, index, array) => {
+      return array.indexOf(region) === index;
+    });
+
+  const filteredRegion = selectedRegion
+    ? countries.filter((country) => country.region === selectedRegion)
+    : countries.sort();
+
+  const filteredCountry = selectedCountry
+    ? countries.filter((country) => country.name.common === selectedCountry)
+    : countries;
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -42,6 +53,9 @@ const App = () => {
 
     return abortController.abort();
   }, []);
+  // console.log(
+  //   countries.filter((country) => country.name.official === "Barbados")
+  // );
 
   return (
     <>
@@ -50,19 +64,30 @@ const App = () => {
           <Header />
         </GridItem>
         <GridItem area={"main"} p={10}>
-          <SimpleGrid justifyItems={"center"} columns={4} spacing={10}>
+          <Flex justify={"space-between"} mb={10}>
+            <SearchFilter
+              onSearchInput={(country) => setSelectedCountry(country)}
+            />
+            <CountryFilter
+              onSelectRegion={(region) => setSelectedRegion(region)}
+              regions={regions}
+            />
+          </Flex>
+          <SimpleGrid justifyItems={"center"} minChildWidth={250} spacing={20}>
             {fetchError && <p>{fetchError}</p>}
-            {countries.map((country, index) => (
-              <CountryCard
-                key={country.name.official}
-                alt={country.flags.alt}
-                country={country.name.official}
-                capital={country.capital}
-                flag={country.flags.svg}
-                population={country.population}
-                region={country.region}
-              />
-            ))}
+            {(selectedCountry ? filteredCountry : filteredRegion).map(
+              (country) => (
+                <CountryCard
+                  key={country.name.common}
+                  alt={country.flags.alt}
+                  country={country.name.common}
+                  capital={country.capital}
+                  flag={country.flags.svg}
+                  population={country.population}
+                  region={country.region}
+                />
+              )
+            )}
           </SimpleGrid>
         </GridItem>
       </Grid>
