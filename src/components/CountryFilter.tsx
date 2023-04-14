@@ -10,7 +10,7 @@ const CountryFilter = ({ onSelectRegion, regions }: FilterProps) => {
     <>
       <Select
         placeholder="Filter by Region"
-        maxW={250}
+        maxW={["100%", "100%", 250]}
         onChange={(event) => onSelectRegion(event.target.value)}
       >
         {regions.map((region) => (

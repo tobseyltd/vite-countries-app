@@ -36,8 +36,12 @@ const App = () => {
           <Header />
         </GridItem>
 
-        <GridItem area={"main"} p={10}>
-          <Flex justify={"space-between"} mb={10}>
+        <GridItem area={"main"} p={[5, 5, 10]}>
+          <Flex
+            direction={["column", "column", "row"]}
+            justify={"space-between"}
+            mb={10}
+          >
             <SearchFilter
               onSearchInput={(country) => setSelectedCountry(country)}
             />
@@ -47,7 +51,7 @@ const App = () => {
             />
           </Flex>
 
-          <SimpleGrid minChildWidth={250} spacing={20}>
+          <SimpleGrid minChildWidth={250} spacing={[5, 10, 20]}>
             {fetchError && <p>{fetchError}</p>}
             {isLoading && <Spinner />}
 

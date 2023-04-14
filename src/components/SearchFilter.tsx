@@ -7,7 +7,7 @@ interface SearchProps {
 
 const SearchFilter = ({ onSearchInput }: SearchProps) => {
   return (
-    <InputGroup maxW={450} borderRadius={"lg"}>
+    <InputGroup maxW={["100%", "100%", 450]} borderRadius={"lg"} mb={[5, 5, 0]}>
       <InputLeftElement
         pointerEvents="none"
         children={<SearchIcon color="gray.300" />}

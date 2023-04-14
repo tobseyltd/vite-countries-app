@@ -6,7 +6,7 @@ const Header = () => {
     <>
       <Flex justify={"space-between"} align={"center"} px={10} py={7}>
         <Box>
-          <Text as="b" fontSize={"2xl"}>
+          <Text as="b" fontSize={["sm", "md", "2xl"]}>
             Where in the World?
           </Text>
         </Box>
@@ -17,7 +17,7 @@ const Header = () => {
             onChange={toggleColorMode}
             size={"md"}
           />
-          <Text as="b" fontSize={"sm"}>
+          <Text as="b" fontSize={["xs", "sm"]}>
             Dark Mode
           </Text>
         </Stack>
