@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 interface CardProps {
+  alt: string;
   country: string;
   capital: string;
   flag: string;
@@ -18,6 +19,7 @@ interface CardProps {
 }
 
 const CountryCard = ({
+  alt,
   country,
   capital,
   flag,
@@ -33,10 +35,10 @@ const CountryCard = ({
         boxShadow={"md"}
       >
         <CardHeader p={0}>
-          <Image src={flag} alt={country} />
+          <Image src={flag} alt={alt} />
         </CardHeader>
         <CardBody>
-          <Box>
+          <Box justifyContent={"space-between"}>
             <Stack spacing={1} p={5}>
               <Heading as={"h2"} fontSize={"2xl"} mb={5}>
                 {country}
