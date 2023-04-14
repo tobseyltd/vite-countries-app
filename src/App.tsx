@@ -1,31 +1,18 @@
-import { Flex, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
-import axios, { CanceledError } from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Flex, Grid, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
 import Header from "./components/Header";
 import CountryCard from "./components/CountryCard";
 import CountryFilter from "./components/CountryFilter";
 import SearchFilter from "./components/SearchFilter";
-
-interface fetchApiProps {
-  name: {
-    common: string;
-  };
-  capital: string;
-  flags: {
-    alt: string;
-    svg: string;
-  };
-  population: number;
-  region: string;
-}
+import useCountries from "./hooks/useCountries";
 
 const App = () => {
-  const [countries, setCountries] = useState<fetchApiProps[]>([]);
-  const [fetchError, setFetchError] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
 
-  const regions = countries
+  const { countries, fetchError, isLoading } = useCountries();
+
+  const sortedFilterRegions = countries
     .map((country) => country.region)
     .sort()
     .filter((region, index, array) => {
@@ -37,25 +24,10 @@ const App = () => {
     : countries.sort();
 
   const filteredCountry = selectedCountry
-    ? countries.filter((country) => country.name.common === selectedCountry)
+    ? countries.filter((country) =>
+        country.name.official.toLowerCase().match(selectedCountry.toLowerCase())
+      )
     : countries;
-
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    axios
-      .get<fetchApiProps[]>("https://restcountries.com/v3.1/all")
-      .then((RESPONSE) => setCountries(RESPONSE.data))
-      .catch((ERROR) => {
-        if (ERROR instanceof CanceledError) return;
-        setFetchError(ERROR.message);
-      });
-
-    return abortController.abort();
-  }, []);
-  // console.log(
-  //   countries.filter((country) => country.name.official === "Barbados")
-  // );
 
   return (
     <>
@@ -63,6 +35,7 @@ const App = () => {
         <GridItem boxShadow={"lg"} area={"nav"}>
           <Header />
         </GridItem>
+
         <GridItem area={"main"} p={10}>
           <Flex justify={"space-between"} mb={10}>
             <SearchFilter
@@ -70,17 +43,20 @@ const App = () => {
             />
             <CountryFilter
               onSelectRegion={(region) => setSelectedRegion(region)}
-              regions={regions}
+              regions={sortedFilterRegions}
             />
           </Flex>
-          <SimpleGrid justifyItems={"center"} minChildWidth={250} spacing={20}>
+
+          <SimpleGrid minChildWidth={250} spacing={20}>
             {fetchError && <p>{fetchError}</p>}
+            {isLoading && <Spinner />}
+
             {(selectedCountry ? filteredCountry : filteredRegion).map(
               (country) => (
                 <CountryCard
-                  key={country.name.common}
+                  key={country.name.official}
                   alt={country.flags.alt}
-                  country={country.name.common}
+                  country={country.name.official}
                   capital={country.capital}
                   flag={country.flags.svg}
                   population={country.population}

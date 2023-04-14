@@ -28,27 +28,26 @@ const CountryCard = ({
 }: CardProps) => {
   return (
     <>
-      <Card
-        maxW={"xs"}
-        borderRadius={"lg"}
-        overflow={"hidden"}
-        boxShadow={"md"}
-      >
+      <Card maxW={"s"} borderRadius={"lg"} overflow={"hidden"} boxShadow={"md"}>
         <CardHeader p={0}>
           <Image src={flag} alt={alt} />
         </CardHeader>
+
         <CardBody>
           <Box justifyContent={"space-between"}>
             <Stack spacing={1} p={5}>
               <Heading as={"h2"} fontSize={"2xl"} mb={5}>
                 {country}
               </Heading>
+
               <Text>
-                <b>Population:</b> {population}
+                <b>Population:</b> {population.toLocaleString("en-US")}
               </Text>
+
               <Text>
                 <b>Region:</b> {region}
               </Text>
+
               <Text>
                 <b>Capital:</b> {capital}
               </Text>
