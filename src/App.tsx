@@ -4,11 +4,18 @@ import Header from "./components/Header";
 import CountryCard from "./components/CountryCard";
 import CountryFilter from "./components/CountryFilter";
 import SearchFilter from "./components/SearchFilter";
+import DetailPage from "./components/DetailPage";
 import useCountries from "./hooks/useCountries";
 
 const App = () => {
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
+  const [detailCountry, setDetailCountry] = useState("");
+  const [displayState, setDisplayState] = useState({
+    displayFilter: true,
+    displayDetail: false,
+    displayHome: true,
+  });
 
   const { countries, fetchError, isLoading } = useCountries();
 
@@ -29,6 +36,14 @@ const App = () => {
       )
     : countries;
 
+  const filteredDetailPageCountry = detailCountry
+    ? countries.filter((country) =>
+        country.name.common.toLowerCase().match(detailCountry.toLowerCase())
+      )
+    : countries;
+
+  console.log(countries);
+
   return (
     <>
       <Grid templateAreas={`"nav" "main"`}>
@@ -37,38 +52,79 @@ const App = () => {
         </GridItem>
 
         <GridItem area={"main"} p={[5, 5, 10]}>
-          <Flex
-            direction={["column", "column", "row"]}
-            justify={"space-between"}
-            mb={10}
-          >
-            <SearchFilter
-              onSearchInput={(country) => setSelectedCountry(country)}
-            />
-            <CountryFilter
-              onSelectRegion={(region) => setSelectedRegion(region)}
-              regions={sortedFilterRegions}
-            />
-          </Flex>
+          {displayState.displayFilter && (
+            <Flex
+              direction={["column", "column", "row"]}
+              justify={"space-between"}
+              mb={10}
+            >
+              <SearchFilter
+                onSearchInput={(country) => setSelectedCountry(country)}
+              />
+              <CountryFilter
+                onSelectRegion={(region) => setSelectedRegion(region)}
+                regions={sortedFilterRegions}
+              />
+            </Flex>
+          )}
+          {displayState.displayDetail &&
+            filteredDetailPageCountry.map((country) => (
+              <DetailPage
+                key={country.name.common}
+                alt={country.flags.alt}
+                borders={country.borders}
+                country={country.name.common}
+                capital={country.capital}
+                flag={country.flags.svg}
+                population={country.population}
+                region={country.region}
+                subRegion={country.subregion}
+                tld={country.tld}
+                currencies={country.currencies}
+                languages={Object.values(country.languages)}
+                nativeName={country.name.official}
+                onBackButtonClick={() => {
+                  setDetailCountry("");
+                  setSelectedCountry("");
+                  setDisplayState({
+                    ...displayState,
+                    displayDetail: false,
+                    displayFilter: true,
+                    displayHome: true,
+                  });
+                }}
+              />
+            ))}
 
-          <SimpleGrid minChildWidth={250} spacing={[5, 10, 20]}>
-            {fetchError && <p>{fetchError}</p>}
-            {isLoading && <Spinner />}
+          {displayState.displayHome && (
+            <SimpleGrid minChildWidth={250} spacing={[5, 10, 20]}>
+              {fetchError && <p>{fetchError}</p>}
+              {isLoading && <Spinner />}
 
-            {(selectedCountry ? filteredCountry : filteredRegion).map(
-              (country) => (
-                <CountryCard
-                  key={country.name.official}
-                  alt={country.flags.alt}
-                  country={country.name.official}
-                  capital={country.capital}
-                  flag={country.flags.svg}
-                  population={country.population}
-                  region={country.region}
-                />
-              )
-            )}
-          </SimpleGrid>
+              {(selectedCountry ? filteredCountry : filteredRegion).map(
+                (country) => (
+                  <CountryCard
+                    key={country.name.official}
+                    alt={country.flags.alt}
+                    country={country.name.official}
+                    capital={country.capital}
+                    flag={country.flags.svg}
+                    population={country.population}
+                    region={country.region}
+                    onCardClick={() => {
+                      setDetailCountry(country.name.common);
+                      setDisplayState({
+                        ...displayState,
+                        displayDetail: true,
+                        displayFilter: false,
+                        displayHome: false,
+                      });
+                    }}
+                  />
+                )
+              )}
+            </SimpleGrid>
+          )}
         </GridItem>
       </Grid>
     </>

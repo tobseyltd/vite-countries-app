@@ -1,8 +1,11 @@
 import axios from 'axios'
 
+
+
 export interface fetchApiProps {
   name: {
     official: string;
+    common: string;
   };
   capital: string;
   flags: {
@@ -11,6 +14,12 @@ export interface fetchApiProps {
   };
   population: number;
   region: string;
+  subregion?: string | undefined;
+  tld?: string[] | undefined;
+  currencies?: any;
+  languages?: any
+  borders?: string[];
+  
 }
 
 class CountriesApiService {

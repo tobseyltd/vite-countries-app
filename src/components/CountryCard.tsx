@@ -9,13 +9,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-interface CardProps {
+export interface CardProps {
   alt: string;
   country: string;
   capital: string;
   flag: string;
   population: number;
   region: string;
+  onCardClick?: () => void;
 }
 
 const CountryCard = ({
@@ -25,10 +26,18 @@ const CountryCard = ({
   flag,
   population,
   region,
+  onCardClick,
 }: CardProps) => {
   return (
     <>
-      <Card maxW={"s"} borderRadius={"lg"} overflow={"hidden"} boxShadow={"md"}>
+      <Card
+        role="button"
+        onClick={onCardClick}
+        maxW={"s"}
+        borderRadius={"lg"}
+        overflow={"hidden"}
+        boxShadow={"md"}
+      >
         <CardHeader p={0}>
           <Image src={flag} alt={alt} />
         </CardHeader>
