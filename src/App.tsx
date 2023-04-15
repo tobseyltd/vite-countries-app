@@ -42,8 +42,6 @@ const App = () => {
       )
     : countries;
 
-  console.log(countries);
-
   return (
     <>
       <Grid templateAreas={`"nav" "main"`}>
