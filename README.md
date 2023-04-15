@@ -1,6 +1,6 @@
-# Frontend Mentor - REST Countries API with color theme switcher
+# REST Countries API with color theme switcher
 
-## Table of contents
+> LIVE VERSION: https://celebrated-puppy-65b210.netlify.app/
 
 ## Table of contents
 
@@ -8,10 +8,6 @@
   - [The challenge](#the-challenge)
 - [My process](#my-process)
   - [Built with](#built-with)
-- [Author](#author)
-- [Acknowledgments](#acknowledgments)
-
-**Note: Delete this note and update the table of contents based on what sections you keep.**
 
 ## Overview
 
