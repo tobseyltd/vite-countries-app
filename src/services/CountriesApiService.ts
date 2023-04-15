@@ -14,8 +14,8 @@ export interface fetchApiProps {
   };
   population: number;
   region: string;
-  subregion?: string | undefined;
-  tld?: string[] | undefined;
+  subregion?: string;
+  tld?: string[];
   currencies?: any;
   languages?: any
   borders?: string[];
