@@ -5,7 +5,7 @@ interface FilterProps {
   regions: String[];
 }
 
-const CountryFilter = ({ onSelectRegion, regions }: FilterProps) => {
+const RegionFilter = ({ onSelectRegion, regions }: FilterProps) => {
   return (
     <>
       <Select
@@ -14,11 +14,13 @@ const CountryFilter = ({ onSelectRegion, regions }: FilterProps) => {
         onChange={(event) => onSelectRegion(event.target.value)}
       >
         {regions.map((region) => (
-          <option key={String(region)}>{region}</option>
+          <option value={String(region)} key={String(region)}>
+            {region}
+          </option>
         ))}
       </Select>
     </>
   );
 };
 
-export default CountryFilter;
+export default RegionFilter;

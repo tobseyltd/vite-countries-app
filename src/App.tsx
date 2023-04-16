@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Flex, Grid, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
 import Header from "./components/Header";
 import CountryCard from "./components/CountryCard";
-import CountryFilter from "./components/CountryFilter";
+import RegionFilter from "./components/RegionFilter";
 import SearchFilter from "./components/SearchFilter";
 import DetailPage from "./components/DetailPage";
 import useCountries from "./hooks/useCountries";
@@ -59,7 +59,7 @@ const App = () => {
               <SearchFilter
                 onSearchInput={(country) => setSelectedCountry(country)}
               />
-              <CountryFilter
+              <RegionFilter
                 onSelectRegion={(region) => setSelectedRegion(region)}
                 regions={sortedFilterRegions}
               />
